@@ -1,0 +1,24 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    restart: always
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/care_matching
+      - JWT_SECRET=simple_secret_key
+    depends_on:
+      - mongodb
+    restart: always
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+volumes:
+  mongodb_data:
